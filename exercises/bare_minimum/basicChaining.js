@@ -10,11 +10,24 @@
 
 var fs = require('fs');
 var Promise = require('bluebird');
+var promiseConstructor = require('./promiseConstructor');
+var promisificator = require('./promisification');
 
 
 
 var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
-  // TODO
+  return promiseConstructor.pluckFirstLineFromFileAsync(readFilePath)
+    .then((user) => {
+      promisificator.getGitHubProfileAsync(user)
+        .then((body) => {
+          fs.writeFile(writeFilePath, JSON.stringify(body), (err) => {
+            console.log(body);
+            if (err) { console.log(err); }
+          });
+        })
+        .catch((err) => { console.log('Oops, caught an error in inner: ', err); });
+    })
+    .catch((err) => { console.log('Oops, caught an error in outer: ', err); });
 };
 
 // Export these functions so we can test them
