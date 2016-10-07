@@ -14,21 +14,17 @@ var promiseConstructor = require(Path.join(__dirname, '../bare_minimum/promiseCo
 var promisificator = require(Path.join(__dirname, '../bare_minimum/promisification'));
 
 var combineFirstLineOfManyFiles = function(filePaths, writePath) {
-  return Promise.all(filePaths)
-    .then(() => {
-      filePaths.forEach(path => {
-        console.log(path);
-        promiseConstructor.pluckFirstLineFromFileAsync(path);
-      });
-    })
-    .then((firstLines) => {
-      fs.writeFile(writePath, JSON.stringify(firstLines), (err) => {
-        if (err) { console.log(err); }
-      });
-    });
+  var result = [];
+  filePaths.forEach(path => {
+    result.push(promiseConstructor.pluckFirstLineFromFileAsync(path));
+  });
+  return Promise.all(result)
+    .then((result) => result.join('\n'))
+    .then((file) => { fs.writeFile(writePath, file); });
 };
 
 // Export these functions so we can unit test them
 module.exports = {
   combineFirstLineOfManyFiles: combineFirstLineOfManyFiles
 };
+
