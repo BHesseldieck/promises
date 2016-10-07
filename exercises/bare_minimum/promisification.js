@@ -28,6 +28,7 @@ var getGitHubProfile = function(user, callback) {
 };
 
 var getGitHubProfileAsync = Promise.promisify(getGitHubProfile);
+// // manually promisified
 // (user, callback) => {
 //   return new Promise((resolve, reject) => {
 //     var options = {

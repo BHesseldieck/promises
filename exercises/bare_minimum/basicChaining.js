@@ -21,7 +21,6 @@ var fetchProfileAndWriteToFile = function(readFilePath, writeFilePath) {
       promisificator.getGitHubProfileAsync(user)
         .then((body) => {
           fs.writeFile(writeFilePath, JSON.stringify(body), (err) => {
-            console.log(body);
             if (err) { console.log(err); }
           });
         })

@@ -9,7 +9,7 @@ var Promise = require('bluebird');
 // This function should retrieve the first line of the file at `filePath`
 var pluckFirstLineFromFile = function (filePath, cb) {
   var result = '';
-  fs.readFile(filePath, (err, data) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) { cb(err); }
     result += data;
     var newResult = result.split('\n');
