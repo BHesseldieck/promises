@@ -18,7 +18,7 @@ var combineFirstLineOfManyFiles = function(filePaths, writePath) {
   filePaths.forEach(path => {
     result.push(promiseConstructor.pluckFirstLineFromFileAsync(path));
   });
-  return Promise.all(result)
+  return Promise.all(result) // Promise all waits until all data is received and then starts to execute the then
     .then((result) => result.join('\n'))
     .then((file) => { fs.writeFile(writePath, file); });
 };
